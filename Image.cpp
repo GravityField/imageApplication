@@ -6,20 +6,20 @@
 #include <iomanip>
 #include <cstring>
 #include "Image.h"
-
+using namespace std;
 
 
 bool Image::load(string filename)
 {
-    std::ifstream ifs;
-    ifs.open(filename, std::ios::binary);
+    ifstream ifs;
+    ifs.open(filename, ios::binary);
     // need to spec. binary mode for Windows users
 
     try {
         if (ifs.fail()) {
             throw("Can't open input file");
         }
-        std::string header;
+        string header;
         int w, h, b;
         ifs >> header;
         if (strcmp(header.c_str(), "P6") != 0) throw("Can't read input file");
@@ -57,21 +57,53 @@ bool Image::loadRaw(string filename)
 }
 bool Image::savePPM(string filename)
 {
-    return false;
+    if (this->w == 0 || this->h == 0) { fprintf(stderr, "Can't save an empty image\n"); return false; }
+    std::ofstream ofs;
+    try {
+        ofs.open(filename, std::ios::binary); // need to spec. binary mode for Windows users
+        if (ofs.fail()) throw("Can't open output file");
+        ofs << "P6\n" << this->w << " " << this->h << "\n255\n";
+        unsigned char r, g, b;
+        // loop over each pixel in the image, clamp and convert to byte format
+        for (int i = 0; i < this->w * this->h; ++i) {
+            r = static_cast(std::min(1.f, this->pixels[i].r) * 255);
+            g = static_cast(std::min(1.f, this->pixels[i].g) * 255);
+            b = static_cast(std::min(1.f, this->pixels[i].b) * 255);
+            ofs << r << g << b;
+        }
+        ofs.close();
+    }
+    catch (const char *err) {
+        fprintf(stderr, "%s\n", err);
+        ofs.close();
+        return false;
+    }
+
+
+    return true;
 }
 
 
 void Image::filterRed()
 {
-
+    for (int i = 0; i < w * h; ++i) {
+        this->pixels[i].g = 0;
+        this->pixels[i].b = 0;
+        }
 }
 void Image::filterGreen()
 {
-
+    for (int i = 0; i < w * h; ++i) {
+        this->pixels[i].r = 0;
+        this->pixels[i].b = 0;
+    }
 }
 void Image::filterBlue()
 {
-
+    for (int i = 0; i < w * h; ++i) {
+        this->pixels[i].r = 0;
+        this->pixels[i].g = 0;
+    }
 }
 void Image::greyScale()
 {
