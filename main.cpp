@@ -54,7 +54,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     AppendMenuW(Alter, MF_STRING, IDM_EDIT_AD2, L"&Additional Function 2"); // Copy this line to add
     AppendMenuW(Alter, MF_STRING, IDM_EDIT_AD3, L"&Additional Function 3"); // Copy this line to add
      // Copy this line to add
-
+    
 
 
     AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu, L"&File");
@@ -76,6 +76,10 @@ void processMenu(HWND hWnd, WPARAM wParam)
             {
                 MessageBox(NULL, _T("Error Loading image! Please try again"),
                            _T("Load Error"),0);
+            }
+            else
+            {
+
             }
             break;
         case IDM_FILE_LOAD_RAW:
@@ -191,5 +195,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
     }
 
+
     return 0;
 }
+
+
