@@ -61,18 +61,18 @@ bool Image::savePPM(string filename)
     std::ofstream ofs;
     try {
         ofs.open(filename, std::ios::binary); // need to spec. binary mode for Windows users
-        if (ofs.fail()) throw("Can't open output file");
+        if (ofs.fail()) throw ("Can't open output file");
         ofs << "P6\n" << this->w << " " << this->h << "\n255\n";
-        float r, g, b;
+        unsigned char r, g, b;
 
         // loop over each pixel in the image, clamp and convert to byte format
         for (int i = 0; i < this->w * this->h; ++i) {
-            r = (float) this->pixels[i].r;
-            g = (float) this->pixels[i].g;
-            b = (float) this->pixels[i].b;
+            r = this->pixels[i].r;
+            g = this->pixels[i].g;
+            b = this->pixels[i].b;
             ofs << r << g << b;
         }
-        cout << "r " << r<<"g " << g<<"b " << b;
+        cout << "r " << r << "g " << g << "b " << b;
         ofs.close();
     }
     catch (const char *err) {
@@ -80,7 +80,6 @@ bool Image::savePPM(string filename)
         ofs.close();
         return false;
     }
-
 
     return true;
 }
@@ -144,7 +143,28 @@ void Image::flipHorizontal()
 }
 void Image::flipVertically()
 {
+    int tempPixels[3];
+    unsigned int pixel1;
+    unsigned int pixel2;
 
+        for(int y = 0; y < w; ++y)
+        {
+            for (int x = 0; x < h/2; ++x) {
+            pixel1 = x + y * h;
+            pixel2 = (h - 1 - y) + x * h;
+            tempPixels[0] = this->pixels[pixel1].r;
+            tempPixels[1] = this->pixels[pixel1].g;
+            tempPixels[2] = this->pixels[pixel1].b;
+            this->pixels[pixel1].r = this->pixels[pixel2].r;
+            this->pixels[pixel1].g = this->pixels[pixel2].g;
+            this->pixels[pixel1].b = this->pixels[pixel2].b;
+            this->pixels[pixel2].r = tempPixels[0];
+            this->pixels[pixel2].g = tempPixels[1];
+            this->pixels[pixel2].b = tempPixels[2];
+
+        }
+
+    }
 
 }
 void Image::AdditionalFunction2()
