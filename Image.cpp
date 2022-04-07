@@ -146,12 +146,11 @@ void Image::flipVertically()
     int tempPixels[3];
     unsigned int pixel1;
     unsigned int pixel2;
-
-        for(int y = 0; y < w; ++y)
+    for (int y = 0; y < h/2; ++y) {
+        for(int x = 0; x < w; ++x)
         {
-            for (int x = 0; x < h/2; ++x) {
-            pixel1 = x + y * h;
-            pixel2 = (h - 1 - y) + x * h;
+            pixel1 = x + y * w;
+            pixel2 = x + (h - 1 - y) * w;
             tempPixels[0] = this->pixels[pixel1].r;
             tempPixels[1] = this->pixels[pixel1].g;
             tempPixels[2] = this->pixels[pixel1].b;
@@ -165,6 +164,8 @@ void Image::flipVertically()
         }
 
     }
+
+
 
 }
 void Image::AdditionalFunction2()
