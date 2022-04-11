@@ -125,7 +125,7 @@ void Image::flipHorizontal()
         for(int x = 0; x < w/2; ++x)
         {
             pixel1 = x + y * w;
-            pixel2 = (w - 1 - x) + y * w;
+            pixel2 = y+ (w - 1 - x) * w;
             tempPixels[0] = this->pixels[pixel1].r;
             tempPixels[1] = this->pixels[pixel1].g;
             tempPixels[2] = this->pixels[pixel1].b;
@@ -168,18 +168,40 @@ void Image::flipVertically()
 
 
 }
+void Image::AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHeight)
+{
+    Rgb cropped[cropWidth * cropHeight];
+
+    for(int y= 0; y<cropHeight; ++y)
+    {
+        if(y + cropY > this->h)
+        {
+            break;
+        }
+        for(int x = 0; x<cropWidth; ++x)
+        {
+            if(x + cropX > this->w)
+            {
+                break;
+            }
+            cropped[x+y*cropWidth] = this->pixels[x+cropX+( y+cropY) * this->w];
+        }
+    }
+    this->w = cropWidth;
+    this->h = cropHeight;
+    int size = cropHeight * cropWidth;
+    for(int i = 0; i < size; i++)
+    this->pixels[i] = cropped[i];
+}
 void Image::AdditionalFunction2()
 {
-
+    //paintbrush?
 }
 void Image::AdditionalFunction3()
 {
-
+    //bucketfill?
 }
-void Image::AdditionalFunction1()
-{
 
-}
 
 /* Functions used by the GUI - DO NOT MODIFY */
 int Image::getWidth()

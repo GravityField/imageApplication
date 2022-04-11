@@ -47,7 +47,7 @@ public:
     void greyScale();
     void flipHorizontal();
     void flipVertically();
-    void AdditionalFunction1();
+    void AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHeight);
     void AdditionalFunction2();
     void AdditionalFunction3();
 
