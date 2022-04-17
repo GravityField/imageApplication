@@ -50,6 +50,7 @@ public:
     void AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHeight);
     void AdditionalFunction2();
     void AdditionalFunction3();
+    Image& operator=(const Image &reference);
 
     /*Functions used in the GUI - DO NOT MODIFY */
     Rgb* getImage();
