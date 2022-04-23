@@ -250,11 +250,18 @@ Image& Image::operator=(const Image &reference)
 }
 void Image::AdditionalFunction3()
 {
+    for(int c = 0; c<w*h; c++)
+    {
+        int newRed = 255 - this->pixels[c].r;
+        int newGreen = 255 - this->pixels[c].g;
+        int newBlue = 255 - this->pixels[c].b;
 
 
+        this->pixels[c].r = newRed;
+        this->pixels[c].g = newGreen;
+        this->pixels[c].b = newBlue;
 
-
-
+    }
 }
 
 /* Functions used by the GUI - DO NOT MODIFY */
