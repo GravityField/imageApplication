@@ -21,6 +21,8 @@ using namespace std;
 #define IDM_EDIT_AD2 12
 #define IDM_EDIT_AD3 13
 #define IDM_FILE_LOAD_RAW 14
+#define IDM_GAMMA 15
+#define IDM_ADVANCED_FEATURE 16
 string current_file;
 string fileType;
 // The main window class name.
@@ -53,8 +55,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     AppendMenuW(Alter, MF_STRING, IDM_EDIT_AD1, L"&Additional Function 1"); // Copy this line to add
     AppendMenuW(Alter, MF_STRING, IDM_EDIT_AD2, L"&Additional Function 2"); // Copy this line to add
     AppendMenuW(Alter, MF_STRING, IDM_EDIT_AD3, L"&Additional Function 3"); // Copy this line to add
-     // Copy this line to add
-    
+    AppendMenuW(Alter, MF_STRING, IDM_GAMMA, L"&Gamma"); // Copy this line to add
+    AppendMenuW(Alter, MF_STRING, IDM_ADVANCED_FEATURE, L"&Advanced Feature"); // Copy this line to add
 
 
     AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu, L"&File");
@@ -131,6 +133,15 @@ void processMenu(HWND hWnd, WPARAM wParam)
 
             image->AdditionalFunction3();
             break;
+        case IDM_GAMMA:
+
+            image->Gamma();
+            break;
+        case IDM_ADVANCED_FEATURE:
+
+            image->AdvancedFeature();
+            break;
+
         case IDM_EDIT_Reset:
             if(fileType=="ppm")
             {

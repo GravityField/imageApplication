@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iomanip>
 #include <cstring>
+#include <cmath>
+#include <math.h>
 #include "Image.h"
 using namespace std;
 
@@ -49,39 +51,23 @@ bool Image::load(string filename)
 }
 bool Image::loadRaw(string filename)
 {
-    ifstream ifs;
 
-    ifs.open(filename, ios::binary);
-    // need to spec. binary mode for Windows users
-    try {
-        if (ifs.fail()) {
-            throw ("Can't open input file");
+    ifstream in(filename);
+    if(in.good()) {
+        in >> w;
+        in >> h;
+
+        for (int i = 0; i < w * h; i++) {
+            float r, g, b;
+            in >> r >> g >> b;
+            this->pixels[i].r = (unsigned char) (std::max(0.f, min(255.f, powf(r, 1 / 2.2) * 255 + 0.5f)));
+            this->pixels[i].g = (unsigned char) (std::max(0.f, min(255.f, powf(g, 1 / 2.2) * 255 + 0.5f)));
+            this->pixels[i].b = (unsigned char) (std::max(0.f, min(255.f, powf(b, 1 / 2.2) * 255 + 0.5f)));
         }
-        std::string header;
-        int w, h, b;
-        ifs >> header;
-        if (strcmp(header.c_str(), "P6") != 0) throw ("Can't read input file");
-        ifs >> w >> h >> b;
-        this->w = w;
-        this->h = h;
-        int imageSize = w * h;
-        this->pixels = new Rgb[w * h]; // this is throw an exception if bad_alloc
-        ifs.ignore(256, '\n'); // skip empty lines in necessary until we get to the binary data
-        unsigned char pix[3]; // read each pixel one by one and convert bytes to floats
-        for (int i = 0; i < imageSize; ++i) {
-            ifs.read(reinterpret_cast<char *>(pix), 3);
-            this->pixels[i].r = pix[0];
-            this->pixels[i].g = pix[1];
-            this->pixels[i].b = pix[2];
-        }
-        ifs.close();
+        in.close();
+        return true;
     }
-    catch (const char *err) {
-        fprintf(stderr, "%s\n", err);
-        ifs.close();
-        return false;
-    }
-    return true;
+    return false;
 }
 bool Image::savePPM(string filename)
 {
@@ -262,6 +248,27 @@ void Image::AdditionalFunction3()
         this->pixels[c].b = newBlue;
 
     }
+}
+void Image::Gamma() {
+    for(int c = 0; c<w*h; c++)
+    {
+        pixels[c].r =  pow(pixels[c].r  / 255.0f, 1/2.2) * 255;
+        pixels[c].g =  pow(pixels[c].g  / 255.0f, 1/2.2) * 255;
+        pixels[c].b =  pow(pixels[c].b  / 255.0f, 1/2.2) * 255;
+    }
+
+
+}
+void Image::AdvancedFeature(){
+    //temporary
+    for(int c = 0; c<w*h; c++)
+    {
+        pixels[c].r =  pow(pixels[c].r  / 255.0f, 2.2) * 255;
+        pixels[c].g =  pow(pixels[c].g  / 255.0f, 2.2) * 255;
+        pixels[c].b =  pow(pixels[c].b  / 255.0f, 2.2) * 255;
+    }
+
+
 }
 
 /* Functions used by the GUI - DO NOT MODIFY */

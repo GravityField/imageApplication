@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
 using namespace std;
 struct Rgb
 {
@@ -50,6 +51,8 @@ public:
     void AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHeight);
     void AdditionalFunction2();
     void AdditionalFunction3();
+    void Gamma();
+    void AdvancedFeature();
     Image& operator=(const Image &reference);
 
     /*Functions used in the GUI - DO NOT MODIFY */
