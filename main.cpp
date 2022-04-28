@@ -139,7 +139,7 @@ void processMenu(HWND hWnd, WPARAM wParam)
             break;
         case IDM_ADVANCED_FEATURE:
 
-            image->AdvancedFeature();
+            image->AdvancedFeature(200,200);
             break;
 
         case IDM_EDIT_Reset:

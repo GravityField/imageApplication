@@ -153,7 +153,6 @@ void Image::flipHorizontal()
         }
 
     }
-
 }
 void Image::flipVertically()
 {
@@ -259,15 +258,28 @@ void Image::Gamma() {
 
 
 }
-void Image::AdvancedFeature(){
-    //temporary
-    for(int c = 0; c<w*h; c++)
-    {
-        pixels[c].r =  pow(pixels[c].r  / 255.0f, 2.2) * 255;
-        pixels[c].g =  pow(pixels[c].g  / 255.0f, 2.2) * 255;
-        pixels[c].b =  pow(pixels[c].b  / 255.0f, 2.2) * 255;
-    }
+void Image::AdvancedFeature(int newWidth, int newHeight){
 
+    Rgb resized[newWidth * newHeight];
+    
+    float scaleX = (float)newWidth / (w);
+    float scaleY = (float)newHeight / (h);
+    int sx, sy;
+
+    for(int y= 0; y<newHeight; ++y)
+    {
+        sy = y / scaleY;
+        for(int x = 0; x<newWidth; ++x)
+        {
+            sx = x/scaleX;
+            resized[x+y*newWidth] = this->pixels[ sx + sy * w];
+        }
+    }
+    this->w = newWidth;
+    this->h = newHeight;
+    int size = newHeight * newWidth;
+    for(int i = 0; i < size; i++)
+        this->pixels[i] = resized[i];
 
 }
 

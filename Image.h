@@ -52,7 +52,7 @@ public:
     void AdditionalFunction2();
     void AdditionalFunction3();
     void Gamma();
-    void AdvancedFeature();
+    void AdvancedFeature(int newWidth, int newHeight);
     Image& operator=(const Image &reference);
 
     /*Functions used in the GUI - DO NOT MODIFY */
