@@ -132,7 +132,7 @@ void Image::greyScale()
 }
 void Image::flipHorizontal()
 {
-    int tempPixels[3];
+    Rgb flipped[w*h];
     unsigned int pixel1;
     unsigned int pixel2;
     for (int y = 0; y < h; ++y) {
@@ -140,15 +140,10 @@ void Image::flipHorizontal()
         {
             pixel1 = x + y * w;
             pixel2 =  (w - 1 - x) + y * w;
-            tempPixels[0] = this->pixels[pixel1].r;
-            tempPixels[1] = this->pixels[pixel1].g;
-            tempPixels[2] = this->pixels[pixel1].b;
-            this->pixels[pixel1].r = this->pixels[pixel2].r;
-            this->pixels[pixel1].g = this->pixels[pixel2].g;
-            this->pixels[pixel1].b = this->pixels[pixel2].b;
-            this->pixels[pixel2].r = tempPixels[0];
-            this->pixels[pixel2].g = tempPixels[1];
-            this->pixels[pixel2].b = tempPixels[2];
+            flipped[pixel1] = this->pixels[pixel1];
+            this->pixels[pixel1] = this->pixels[pixel2];
+            this->pixels[pixel2] = flipped[pixel1];
+
 
         }
 
@@ -156,7 +151,8 @@ void Image::flipHorizontal()
 }
 void Image::flipVertically()
 {
-    int tempPixels[3];
+    Rgb flipped[w*h];
+
     unsigned int pixel1;
     unsigned int pixel2;
     for (int y = 0; y < h/2; ++y) {
@@ -164,16 +160,9 @@ void Image::flipVertically()
         {
             pixel1 = x + y * w;
             pixel2 = x + (h - 1 - y) * w;
-            tempPixels[0] = this->pixels[pixel1].r;
-            tempPixels[1] = this->pixels[pixel1].g;
-            tempPixels[2] = this->pixels[pixel1].b;
-            this->pixels[pixel1].r = this->pixels[pixel2].r;
-            this->pixels[pixel1].g = this->pixels[pixel2].g;
-            this->pixels[pixel1].b = this->pixels[pixel2].b;
-            this->pixels[pixel2].r = tempPixels[0];
-            this->pixels[pixel2].g = tempPixels[1];
-            this->pixels[pixel2].b = tempPixels[2];
-
+            flipped[pixel1] = this->pixels[pixel1];
+            this->pixels[pixel1] = this->pixels[pixel2];
+            this->pixels[pixel2] = flipped[pixel1];
         }
 
     }
@@ -183,6 +172,7 @@ void Image::flipVertically()
 }
 void Image::AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHeight)
 {
+    //crop
     Rgb cropped[cropWidth * cropHeight];
 
     for(int y= 0; y<cropHeight; ++y)
@@ -208,7 +198,7 @@ void Image::AdditionalFunction1(int cropX, int cropY, int cropWidth, int cropHei
 }
 void Image::AdditionalFunction2()
 {
-
+    //rotate 90
     Image sideFlipped = Image(w,h);
     for(int x= 0; x < h; ++x)
     {
@@ -221,26 +211,15 @@ void Image::AdditionalFunction2()
     *this = sideFlipped;
 
 }
-Image& Image::operator=(const Image &reference)
-{
-    if(this != &reference) {
-        w = reference.h;
-        h = reference.w;
-        pixels = new Rgb[w * h];
-        for(int i = 0; i < w * h; ++i) {
-            pixels[i] = reference.pixels[i];
-        }
-    }
-    return *this;
-}
+
 void Image::AdditionalFunction3()
 {
+    //invert
     for(int c = 0; c<w*h; c++)
     {
         int newRed = 255 - this->pixels[c].r;
         int newGreen = 255 - this->pixels[c].g;
         int newBlue = 255 - this->pixels[c].b;
-
 
         this->pixels[c].r = newRed;
         this->pixels[c].g = newGreen;
@@ -259,9 +238,9 @@ void Image::Gamma() {
 
 }
 void Image::AdvancedFeature(int newWidth, int newHeight){
-
+    //resizing
     Rgb resized[newWidth * newHeight];
-    
+
     float scaleX = (float)newWidth / (w);
     float scaleY = (float)newHeight / (h);
     int sx, sy;
@@ -282,7 +261,18 @@ void Image::AdvancedFeature(int newWidth, int newHeight){
         this->pixels[i] = resized[i];
 
 }
-
+Image& Image::operator=(const Image &reference)
+{
+    if(this != &reference) {
+        w = reference.h;
+        h = reference.w;
+        pixels = new Rgb[w * h];
+        for(int i = 0; i < w * h; ++i) {
+            pixels[i] = reference.pixels[i];
+        }
+    }
+    return *this;
+}
 /* Functions used by the GUI - DO NOT MODIFY */
 int Image::getWidth()
 {
